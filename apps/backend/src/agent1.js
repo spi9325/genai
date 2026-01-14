@@ -33,32 +33,31 @@ async function main() {
     const TOOLS = {
         sum,
     }
-    const res = TOOLS['sum']
-    const r= res({num1:1,num2:3})
-    console.log(r)
-    // const response = await ai.models.generateContent({
-    //     model: "gemini-3-flash-preview",
-    //     contents: [{ role: 'user', parts: [{ text: 'what is sum of 1000 and 100' }] }],
-    //     config: {
-    //         tools: [{
-    //             functionDeclarations: [declareSumFn]
-    //         }],
-    //     }
-    // });
-    // if (response.functionCalls && response.functionCalls.length > 0) {
-    //     const functionCall = response.functionCalls[0]; // Assuming one function call
-    //     console.log(`Function to call: ${functionCall.name}`);
-    //     console.log(`Arguments: ${JSON.stringify(functionCall.args)}`);
-    //     // In a real app, you would call your actual function here:
-    //     // const result = await getCurrentTemperature(functionCall.args);
-    //     const Called = TOOLS[functionCall.name]
-    //     const result  = Called(functionCall.args)
-    //     console.log(result)
-    // } else {
-    //     console.log("No function call found in the response.");
-    //     console.log(response.text);
+    
 
-    // }
+    const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: [{ role: 'user', parts: [{ text: 'what is sum of 1000 and 100' }] }],
+        config: {
+            tools: [{
+                functionDeclarations: [declareSumFn]
+            }],
+        }
+    });
+    if (response.functionCalls && response.functionCalls.length > 0) {
+        const functionCall = response.functionCalls[0]; // Assuming one function call
+        console.log(`Function to call: ${functionCall.name}`);
+        console.log(`Arguments: ${JSON.stringify(functionCall.args)}`);
+        // In a real app, you would call your actual function here:
+        // const result = await getCurrentTemperature(functionCall.args);
+        const Called = TOOLS[functionCall.name]
+        const result  = Called(functionCall.args)
+        console.log(result)
+    } else {
+        console.log("No function call found in the response.");
+        console.log(response.text);
+
+    }
 }
 
 main();
